@@ -1,0 +1,33 @@
+---
+- name: Créer l'utilisateur devops
+  ansible.builtin.user:
+    name: devops
+    shell: /bin/bash
+    groups: sudo
+    append: true
+    create_home: true
+
+- name: Autoriser devops en sudo sans mot de passe
+  ansible.builtin.copy:
+    dest: /etc/sudoers.d/devops
+    content: "devops ALL=(ALL) NOPASSWD:ALL\n"
+    owner: root
+    group: root
+    mode: "0440"
+    validate: "visudo -cf %s"
+
+- name: Créer le dossier .ssh de devops
+  ansible.builtin.file:
+    path: /home/devops/.ssh
+    state: directory
+    owner: devops
+    group: devops
+    mode: "0700"
+
+- name: Déployer la clé publique SSH
+  ansible.builtin.copy:
+    src: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519.pub"
+    dest: /home/devops/.ssh/authorized_keys
+    owner: devops
+    group: devops
+    mode: "0600"

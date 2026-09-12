@@ -1,0 +1,46 @@
+---
+- name: Mettre à jour le cache apt
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Mettre à jour tous les paquets
+  ansible.builtin.apt:
+    upgrade: dist
+
+- name: Installer les paquets essentiels
+  ansible.builtin.apt:
+    name:
+      - curl
+      - git
+      - htop
+      - vim
+      - ufw
+      - ca-certificates
+      - gnupg
+      - python3-pip
+    state: present
+
+- name: Définir la timezone
+  ansible.builtin.timezone:
+    name: Europe/Paris
+
+- name: Autoriser SSH dans UFW
+  community.general.ufw:
+    rule: allow
+    port: "22"
+    proto: tcp
+
+- name: Autoriser HTTP/HTTPS dans UFW
+  community.general.ufw:
+    rule: allow
+    port: "{{ item }}"
+  loop:
+    - "80"
+    - "443"
+
+- name: Activer UFW (refuser tout le reste par défaut)
+  community.general.ufw:
+    state: enabled
+    policy: deny
+    direction: incoming

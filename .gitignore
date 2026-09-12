@@ -1,0 +1,21 @@
+# Python / venvs
+__pycache__/
+*.pyc
+.venv/
+ansible-venv/
+venv/
+
+# Fichiers Ansible
+*.retry
+*.bak
+
+# OS / éditeurs
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Secrets (jamais dans Git !)
+*.pem
+*.key
+.env

@@ -1,0 +1,15 @@
+---
+- name: Créer l'arborescence du projet
+  ansible.builtin.file:
+    path: "/opt/devops-lab/{{ item }}"
+    state: directory
+    owner: devops
+    group: docker
+    mode: "0755"
+  loop:
+    - ""
+    - app
+    - nginx
+    - monitoring/prometheus
+    - monitoring/grafana/dashboards
+    - jenkins

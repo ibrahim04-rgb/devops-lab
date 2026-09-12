@@ -1,0 +1,9 @@
+---
+- name: Provisioning de la VM DevOps
+  hosts: devops_vm
+  become: true
+  roles:
+    - base
+    - users
+    - docker
+    - project_dirs
